@@ -1,0 +1,29 @@
+{
+  "name": "cybersecurity-dashboard",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc -b && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@heroicons/vue": "^2.2.0",
+    "@iconify/vue": "^5.0.0",
+    "axios": "^1.11.0",
+    "chart.js": "^4.4.0",
+    "vue": "^3.4.38",
+    "vue-chartjs": "^5.3.1",
+    "vue-router": "^4.5.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.1.3",
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.32",
+    "tailwindcss": "^3.4.0",
+    "typescript": "^5.5.3",
+    "vite": "^7.0.6",
+    "vue-tsc": "^2.1.4"
+  }
+}

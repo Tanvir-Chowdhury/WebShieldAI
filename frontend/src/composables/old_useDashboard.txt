@@ -1,0 +1,409 @@
+// composables/useDashboard.ts
+import { ref, computed, onMounted } from "vue";
+import api from "../composables/axios";
+import type { Website, Attack, SecurityMetrics, ChartData } from "../types/dashboard";
+
+export function useDashboard() {
+  const websites = ref<Website[]>([]);
+  const selectedWebsite = ref<Website | null>(null);
+  const isAddModalOpen = ref(false);
+  const isDetailsModalOpen = ref(false);
+
+  const toNum = (v: string | number) => Number(v);
+  const isFiniteNum = (n: any) => Number.isFinite(Number(n));
+  const toISO = (v: any) => {
+    try {
+      const d = new Date(v ?? Date.now());
+      return isNaN(d.getTime()) ? new Date().toISOString() : d.toISOString();
+    } catch {
+      return new Date().toISOString();
+    }
+  };
+
+  // ---- types you’re using in the UI ----
+  type AttackType = "sql_injection" | "xss" | "dom" | "defacement";
+  type AttackSeverity = "low" | "medium" | "high" | "critical";
+
+  // ---- normalize backend log row -> Attack ----
+  const normalizeLog = (log: any, i = 0): Attack => {
+    const rawTs = log.occurred_at ?? log.created_at ?? log.timestamp;
+    const iso = toISO(rawTs);
+
+    const pred = typeof log.prediction === "string" ? log.prediction.toLowerCase() : "";
+    // rule: malicious/defaced => high; else low
+    const severity: AttackSeverity =
+      pred.includes("defaced") || pred.includes("malicious") ? "high" : "low";
+
+    const rawType = String(log.type ?? "sql").toLowerCase();
+    const type: AttackType =
+      rawType === "xss" || rawType === "dom" || rawType === "defacement"
+        ? rawType
+        : "sql_injection";
+
+    return {
+      id: String(log.id ?? i),
+      type,
+      severity,
+      timestamp: iso,
+      sourceIp: String(log.ip_address ?? ""),
+      blocked: pred.includes("malicious"),
+      details: String(log.query ?? log.prediction ?? log.details ?? "Attack detected"),
+      location: "Unknown",
+    };
+  };
+
+  // ---- map /websites response -> Website used by UI ----
+  const mapWebsite = (site: any): Website => ({
+    id: site.id, // keep numeric if API returns number
+    name: site.name,
+    url: site.url,
+    status: "safe",
+    protections: {
+      sqlInjection: !!site.sqli_enabled,
+      xssProtection: !!site.xss_enabled,
+      domProtection: !!site.dom_enabled,
+      defacementProtection: !!site.defacement_enabled,
+    },
+    metrics: {
+      totalRequests: 0,        // filled from logs count
+      blockedAttacks: 0,       // filled from logs
+      uptime: 0,               // filled from metrics endpoint
+      responseTime: 0,         // filled from metrics endpoint (p95/avg)
+    },
+    attacks: [],
+    lastChecked: new Date(),
+  });
+
+  const getProtectionType = (key: keyof Website["protections"]) => {
+    switch (key) {
+      case "sqlInjection":
+        return "sqli";
+      case "xssProtection":
+        return "xss";
+      case "domProtection":
+        return "dom";
+      case "defacementProtection":
+        return "defacement";
+    }
+  };
+
+  // ---------- API calls ----------
+  const fetchAttackLogs = async (websiteId: number | string) => {
+    try {
+      const id = toNum(websiteId);
+      const { data } = await api.get(`/websites/${id}/attack-logs`, { withCredentials: true });
+      const logs: Attack[] = (Array.isArray(data) ? data : []).map(normalizeLog);
+
+      const site = websites.value.find((w) => toNum(w.id) === id);
+      if (site) {
+        site.attacks = logs;
+        site.metrics.blockedAttacks = logs.filter((a) => a.blocked).length;
+        site.metrics.totalRequests = logs.length;
+        site.lastChecked = new Date();
+      }
+      return logs;
+    } catch (err: any) {
+      console.error("Failed to fetch attack logs:", err?.response?.data || err);
+      return [];
+    }
+  };
+
+  const fetchAllAttackLogsForUser = async () => {
+    if (!websites.value.length) await fetchWebsitesFromDB();
+
+    const ids = websites.value.map((w) => toNum(w.id)).filter(isFiniteNum);
+    const perSite: Record<number, Attack[]> = {};
+
+    await Promise.all(
+      ids.map(async (id) => {
+        try {
+          const { data } = await api.get(`/websites/${id}/attack-logs`, { withCredentials: true });
+          const logs: Attack[] = (Array.isArray(data) ? data : []).map(normalizeLog);
+          const site = websites.value.find((w) => toNum(w.id) === id);
+          if (site) {
+            site.attacks = logs;
+            site.metrics.blockedAttacks = logs.filter((a) => a.blocked).length;
+            site.metrics.totalRequests = logs.length;
+            site.lastChecked = new Date();
+          }
+          perSite[id] = logs;
+        } catch (err: any) {
+          console.error(`Failed to fetch logs for website ${id}:`, err?.response?.data || err);
+          perSite[id] = [];
+        }
+      })
+    );
+
+    const allAttacks: Attack[] = Object.values(perSite)
+      .flat()
+      .sort(
+        (a, b) =>
+          new Date(b.timestamp as any).getTime() - new Date(a.timestamp as any).getTime()
+      );
+
+    return { perSite, allAttacks };
+  };
+
+  // ---- uptime/latency metrics (new) ----
+  const refreshSiteMetrics = async (websiteId: number, days = 7) => {
+    try {
+      const { data } = await api.get(`/websites/${websiteId}/uptime`, {
+        params: { days },
+        withCredentials: true,
+      });
+      const site = websites.value.find((w) => toNum(w.id) === websiteId);
+      if (site) {
+        site.metrics.uptime = Math.round(data?.uptime_pct ?? 0);
+        site.metrics.responseTime = data?.p95_ms ?? data?.avg_ms ?? 0; // prefer p95
+      }
+    } catch (e) {
+      console.error(`Failed to load uptime metrics for site ${websiteId}:`, e);
+    }
+  };
+
+  const globalUptimePct = ref(0);
+  const globalAvgMs = ref<number | null>(null);
+
+  const refreshGlobalUptimeSummary = async (days = 7) => {
+    try {
+      const { data } = await api.get("/summary/uptime", {
+        params: { days },
+        withCredentials: true,
+      });
+      globalUptimePct.value = Math.round(data?.uptime_pct ?? 0);
+      globalAvgMs.value = data?.avg_ms ?? null;
+    } catch (e) {
+      console.error("Failed to load global uptime summary:", e);
+      globalUptimePct.value = 0;
+      globalAvgMs.value = null;
+    }
+  };
+
+  const fetchWebsitesFromDB = async () => {
+    try {
+      const res = await api.get("/websites/", { withCredentials: true });
+      websites.value = (Array.isArray(res.data) ? res.data : []).map(mapWebsite);
+
+      // Fill attacks first so UI has data
+      await fetchAllAttackLogsForUser();
+
+      // Pull uptime/latency metrics
+      await Promise.all(
+        websites.value.map((w) => refreshSiteMetrics(toNum(w.id)))
+      );
+      await refreshGlobalUptimeSummary();
+    } catch (error) {
+      console.error("Failed to fetch websites:", error);
+    }
+  };
+
+  onMounted(fetchWebsitesFromDB);
+
+  // ---------- Metrics & Charts (from real logs) ----------
+  const securityMetrics = computed<SecurityMetrics>(() => {
+    const totals = { totalWebsites: websites.value.length, activeThreats: 0, blocked: 0 };
+
+    // activeThreats rule:
+    // - count all rows from sql/xss/dom
+    // - for defacement, count only those predicted "defaced" (severity==='high')
+    websites.value.forEach((w) => {
+      const attacks = w.attacks ?? [];
+      attacks.forEach((a) => {
+        if (a.type === "sql_injection" || a.type === "xss" || a.type === "dom") {
+          totals.activeThreats += 1;
+        } else if (a.type === "defacement" && a.severity === "high") {
+          totals.activeThreats += 1;
+        }
+        if (a.blocked) totals.blocked += 1;
+      });
+    });
+
+    // Prefer global uptime if available; otherwise average site uptimes
+    const uptime =
+      globalUptimePct.value ||
+      (websites.value.length
+        ? Math.round(
+            websites.value.reduce((sum, w) => sum + (w.metrics?.uptime ?? 0), 0) /
+              websites.value.length
+          )
+        : 0);
+
+    return {
+      totalWebsites: totals.totalWebsites,
+      activeThreats: totals.activeThreats,
+      blockedAttacks: totals.blocked,
+      uptime,
+    };
+  });
+
+  const attacksOverTime = computed<ChartData>(() => {
+    // last 7 days: group by day
+    const days = Array.from({ length: 7 }, (_, i) => {
+      const d = new Date();
+      d.setDate(d.getDate() - (6 - i));
+      d.setHours(0, 0, 0, 0);
+      return d;
+    });
+
+    const counts = days.map(() => 0);
+    const blockedCounts = days.map(() => 0);
+
+    websites.value.forEach((w) => {
+      (w.attacks ?? []).forEach((a) => {
+        const ts = new Date(a.timestamp as any);
+        ts.setHours(0, 0, 0, 0);
+        const idx = days.findIndex((d) => d.getTime() === ts.getTime());
+        if (idx >= 0) {
+          counts[idx] += 1;
+          if (a.blocked) blockedCounts[idx] += 1;
+        }
+      });
+    });
+
+    const labels = days.map((d) =>
+      d.toLocaleDateString("en-US", { month: "short", day: "numeric" })
+    );
+
+    return {
+      labels,
+      datasets: [
+        {
+          label: "Total Attacks",
+          data: counts,
+          borderColor: "#ef4444",
+          backgroundColor: "rgba(239,68,68,0.1)",
+          borderWidth: 2,
+          fill: true,
+        },
+        {
+          label: "Blocked Attacks",
+          data: blockedCounts,
+          borderColor: "#10b981",
+          backgroundColor: "rgba(16,185,129,0.1)",
+          borderWidth: 2,
+          fill: true,
+        },
+      ],
+    };
+  });
+
+  const threatDistribution = computed<ChartData>(() => {
+    const bucket: Record<AttackType, number> = {
+      sql_injection: 0,
+      xss: 0,
+      dom: 0,
+      defacement: 0,
+    };
+    websites.value.forEach((w) => {
+      (w.attacks ?? []).forEach((a) => {
+        if (a.type in bucket) bucket[a.type as AttackType] += 1;
+      });
+    });
+
+    const labels = ["SQL", "XSS", "DOM", "Defacement"];
+    const data = [bucket.sql_injection, bucket.xss, bucket.dom, bucket.defacement];
+
+    return {
+      labels,
+      datasets: [
+        {
+          label: "Threats",
+          data,
+          backgroundColor: ["#ef4444", "#f97316", "#3b82f6", "#8b5cf6"],
+          borderWidth: 0,
+        },
+      ],
+    };
+  });
+
+  // ---------- Actions ----------
+  const addWebsite = async (name: string, url: string) => {
+    try {
+      // If you have a backend create endpoint, call it; otherwise just refresh list.
+      // await api.post("/websites/", { name, url }, { withCredentials: true });
+      await fetchWebsitesFromDB();
+      isAddModalOpen.value = false;
+    } catch (e) {
+      console.error("Failed to add website:", e);
+    }
+  };
+
+  const removeWebsite = async (id: number) => {
+    try {
+      await api.delete(`/websites/${id}`, { withCredentials: true });
+      websites.value = websites.value.filter((w) => toNum(w.id) !== toNum(id));
+    } catch (error) {
+      console.error("Error deleting website:", error);
+    }
+  };
+
+  const toggleProtection = async (
+    websiteId: string | number,
+    protection: keyof Website["protections"]
+  ) => {
+    const site = websites.value.find((w) => toNum(w.id) === toNum(websiteId));
+    if (!site) return;
+
+    const newState = !site.protections[protection];
+    const protection_type = getProtectionType(protection);
+
+    // optimistic update
+    site.protections[protection] = newState;
+
+    try {
+      await api.post(
+        `/websites/${toNum(websiteId)}/update-protection`,
+        { protection_type, enabled: newState },
+        { withCredentials: true }
+      );
+    } catch (e) {
+      // revert on error
+      site.protections[protection] = !newState;
+      console.error("Failed to toggle protection:", e);
+    }
+
+    const active = Object.values(site.protections).filter(Boolean).length;
+    site.status = active === 4 ? "safe" : active >= 1 ? "warning" : "danger";
+  };
+
+  const openWebsiteDetails = async (site: Website) => {
+    selectedWebsite.value = site;
+    isDetailsModalOpen.value = true;
+    await fetchAttackLogs(site.id);
+    await refreshSiteMetrics(toNum(site.id));
+  };
+
+  const refreshWebsiteById = async (id: string | number) => {
+    await fetchAttackLogs(id);
+    await refreshSiteMetrics(toNum(id));
+  };
+
+  const refreshAllWebsites = async () => {
+    await fetchAllAttackLogsForUser();
+    await Promise.all(websites.value.map((w) => refreshSiteMetrics(toNum(w.id))));
+    await refreshGlobalUptimeSummary();
+  };
+
+  const loadWebsitesFromDB = fetchWebsitesFromDB; // keep same API
+
+  return {
+    websites,
+    selectedWebsite,
+    isAddModalOpen,
+    isDetailsModalOpen,
+    securityMetrics,
+    attacksOverTime,
+    threatDistribution,
+    addWebsite,
+    removeWebsite,
+    toggleProtection,
+    openWebsiteDetails,
+    loadWebsitesFromDB,
+    refreshWebsite: refreshWebsiteById,
+    viewDetails: openWebsiteDetails,
+    fetchAttackLogs,
+    fetchAllAttackLogsForUser,
+    refreshSiteMetrics,
+    refreshGlobalUptimeSummary,
+  };
+}

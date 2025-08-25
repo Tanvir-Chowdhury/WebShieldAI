@@ -1,0 +1,690 @@
+<!-- Week 3 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Shield AI - AI-Powered Web Security</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .hero-gradient {
+            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 50%, #3b82f6 100%);
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .glow {
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+        }
+    </style>
+</head>
+<body class="font-sans antialiased text-gray-800">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <i class="fas fa-shield-alt text-blue-600 text-2xl mr-2"></i>
+                        <span class="text-xl font-bold text-gray-900">Web Shield AI</span>
+                    </div>
+                </div>
+                <div class="hidden md:ml-6 md:flex md:items-center md:space-x-8">
+                    <a href="#features" class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Features</a>
+                    <a href="#how-it-works" class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">How It Works</a>
+                    <a href="#pricing" class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Pricing</a>
+                    <a href="#reviews" class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Reviews</a>
+                </div>
+                <div class="flex items-center">
+                    <a href="#signup" class="ml-8 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        Get Started
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+<section class="hero-gradient text-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-32">
+    <div class="md:flex md:items-center md:justify-between">
+      
+      <!-- Intro Text -->
+      <div class="md:w-1/2 mb-10 md:mb-0">
+        <h1 class="text-4xl md:text-5xl font-bold leading-tight mb-6">
+          AI-Powered Web Security Protection
+        </h1>
+        <p class="text-xl mb-8 opacity-90">
+          Stay safe from XSS, SQL injections, and web defacement using our AI-based protection—perfect for Bangladeshi businesses.
+        </p>
+        <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+          <a href="#signup" class="bg-white text-blue-600 hover:bg-gray-100 px-6 py-3 rounded-lg font-semibold text-center transition duration-300 glow">
+            Start Free Trial
+          </a>
+          <a href="#demo" class="border-2 border-white text-white hover:bg-white hover:text-blue-600 px-6 py-3 rounded-lg font-semibold text-center transition duration-300">
+            Watch Demo
+          </a>
+        </div>
+      </div>
+
+      <!-- Dashboard Preview -->
+      <div class="md:w-1/2 flex justify-center">
+        <div class="relative w-full max-w-md">
+          <div class="absolute -top-10 -left-10 w-32 h-32 bg-blue-400 rounded-full mix-blend-multiply filter blur-xl opacity-70"></div>
+          <div class="absolute -bottom-10 -right-10 w-32 h-32 bg-blue-600 rounded-full mix-blend-multiply filter blur-xl opacity-70"></div>
+          
+          <div class="relative bg-white rounded-xl shadow-2xl overflow-hidden">
+            <div class="bg-gray-800 py-2 px-4 flex items-center">
+              <div class="flex space-x-2">
+                <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                <div class="w-3 h-3 rounded-full bg-green-500"></div>
+              </div>
+              <div class="text-white text-sm font-mono mx-auto">dashboard.webshieldai.com</div>
+            </div>
+
+            <div class="p-6">
+              <div class="flex justify-between items-center mb-4">
+                <div class="text-gray-900 font-bold">Security Dashboard</div>
+                <div class="text-green-600 text-sm font-medium flex items-center">
+                  <span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
+                  Active Protection
+                </div>
+              </div>
+
+              <!-- Protection Stats -->
+              <div class="space-y-4">
+                <div class="bg-gray-100 p-3 rounded-lg">
+                  <div class="flex justify-between text-sm">
+                    <span class="font-medium">Blocked XSS Attacks</span>
+                    <span class="font-bold">24</span>
+                  </div>
+                  <div class="w-full bg-gray-300 h-2 rounded-full mt-1">
+                    <div class="bg-blue-600 h-2 rounded-full" style="width: 80%"></div>
+                  </div>
+                </div>
+
+                <div class="bg-gray-100 p-3 rounded-lg">
+                  <div class="flex justify-between text-sm">
+                    <span class="font-medium">SQL Injection Attempts Stopped</span>
+                    <span class="font-bold">18</span>
+                  </div>
+                  <div class="w-full bg-gray-300 h-2 rounded-full mt-1">
+                    <div class="bg-blue-600 h-2 rounded-full" style="width: 60%"></div>
+                  </div>
+                </div>
+
+                <div class="bg-gray-100 p-3 rounded-lg">
+                  <div class="flex justify-between text-sm">
+                    <span class="font-medium">Suspicious IPs Blocked</span>
+                    <span class="font-bold">42</span>
+                  </div>
+                  <div class="w-full bg-gray-300 h-2 rounded-full mt-1">
+                    <div class="bg-blue-600 h-2 rounded-full" style="width: 90%"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Button -->
+              <div class="mt-6 text-center">
+                <button class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                  See Full Security Report →
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Trusted By Section -->
+<section class="bg-gray-50 py-12">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <p class="text-center text-gray-500 mb-8">Trusted by innovative companies across Bangladesh</p>
+    <div class="grid grid-cols-2 md:grid-cols-5 gap-8 items-center justify-center">
+      <div class="flex justify-center">
+        <div class="text-gray-700 text-2xl font-bold">NextGen IT</div>
+      </div>
+      <div class="flex justify-center">
+        <div class="text-gray-700 text-2xl font-bold">BanglaSoft</div>
+      </div>
+      <div class="flex justify-center">
+        <div class="text-gray-700 text-2xl font-bold">DataFort BD</div>
+      </div>
+      <div class="flex justify-center">
+        <div class="text-gray-700 text-2xl font-bold">WebNest Ltd</div>
+      </div>
+      <div class="flex justify-center">
+        <div class="text-gray-700 text-2xl font-bold">CloudBridge</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+    <!-- Features Section -->
+<section id="features" class="py-20 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl font-bold text-gray-900 mb-4">Key Protection Features</h2>
+      <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+        Our AI system keeps your website safe by detecting threats and stopping attacks before they cause damage.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- Feature 1 -->
+      <div class="feature-card bg-white p-8 rounded-xl border border-gray-200 transition duration-300">
+        <div class="w-14 h-14 bg-blue-100 rounded-lg flex items-center justify-center mb-6">
+          <i class="fas fa-robot text-blue-600 text-2xl"></i>
+        </div>
+        <h3 class="text-xl font-bold text-gray-900 mb-3">AI Threat Detection</h3>
+        <p class="text-gray-600">Automatically finds and blocks new attack patterns using smart machine learning tools.</p>
+      </div>
+
+      <!-- Feature 2 -->
+      <div class="feature-card bg-white p-8 rounded-xl border border-gray-200 transition duration-300">
+        <div class="w-14 h-14 bg-green-100 rounded-lg flex items-center justify-center mb-6">
+          <i class="fas fa-shield-alt text-green-600 text-2xl"></i>
+        </div>
+        <h3 class="text-xl font-bold text-gray-900 mb-3">XSS & SQL Safety</h3>
+        <p class="text-gray-600">Blocks cross-site scripting and SQL injection attacks — no setup needed.</p>
+      </div>
+
+      <!-- Feature 3 -->
+      <div class="feature-card bg-white p-8 rounded-xl border border-gray-200 transition duration-300">
+        <div class="w-14 h-14 bg-purple-100 rounded-lg flex items-center justify-center mb-6">
+          <i class="fas fa-history text-purple-600 text-2xl"></i>
+        </div>
+        <h3 class="text-xl font-bold text-gray-900 mb-3">Auto-Recovery</h3>
+        <p class="text-gray-600">If your site is hacked or defaced, our system brings it back to normal automatically.</p>
+      </div>
+
+      <!-- Feature 4 -->
+      <div class="feature-card bg-white p-8 rounded-xl border border-gray-200 transition duration-300">
+        <div class="w-14 h-14 bg-yellow-100 rounded-lg flex items-center justify-center mb-6">
+          <i class="fas fa-bell text-yellow-600 text-2xl"></i>
+        </div>
+        <h3 class="text-xl font-bold text-gray-900 mb-3">Live Alerts</h3>
+        <p class="text-gray-600">Get messages instantly if anything goes wrong, with clear actions to take.</p>
+      </div>
+
+      <!-- Feature 5 -->
+      <div class="feature-card bg-white p-8 rounded-xl border border-gray-200 transition duration-300">
+        <div class="w-14 h-14 bg-red-100 rounded-lg flex items-center justify-center mb-6">
+          <i class="fas fa-globe text-red-600 text-2xl"></i>
+        </div>
+        <h3 class="text-xl font-bold text-gray-900 mb-3">IP Blocking</h3>
+        <p class="text-gray-600">Stops harmful IP addresses from accessing your site again and again.</p>
+      </div>
+
+      <!-- Feature 6 -->
+      <div class="feature-card bg-white p-8 rounded-xl border border-gray-200 transition duration-300">
+        <div class="w-14 h-14 bg-indigo-100 rounded-lg flex items-center justify-center mb-6">
+          <i class="fas fa-chart-bar text-indigo-600 text-2xl"></i>
+        </div>
+        <h3 class="text-xl font-bold text-gray-900 mb-3">Attack Reports</h3>
+        <p class="text-gray-600">Understand how your site is being targeted with visual charts and easy summaries.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">How Web Shield AI Works</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">Get set up in minutes with our simple integration process.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Step 1 -->
+                <div class="bg-white p-8 rounded-xl border border-gray-200">
+                    <div class="flex items-center mb-6">
+                        <!--<div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold mr-4">1</div>-->
+                        <h3 class="text-xl font-bold text-gray-900">Sign Up & Add Your Site</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">Create your account and enter your website URL to register it with our protection system.</p>
+                    <!--<div class="bg-gray-100 p-4 rounded-lg font-mono text-sm overflow-x-auto">
+                        https://yourwebsite.com
+                    </div>-->
+                </div>
+                
+                <!-- Step 2 -->
+                <div class="bg-white p-8 rounded-xl border border-gray-200">
+                    <div class="flex items-center mb-6">
+                       <!-- <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold mr-4">2</div>-->
+                        <h3 class="text-xl font-bold text-gray-900">Add Integration Code</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">Copy and paste our JavaScript snippet or use our API to connect your backend.</p>
+                    <!--<div class="bg-gray-100 p-4 rounded-lg font-mono text-sm overflow-x-auto">
+                        &lt;script src="https://cdn.webshieldai.com/protect.js?key=YOUR_API_KEY"&gt;&lt;/script&gt;
+                    </div>-->
+                </div>
+                
+                <!-- Step 3 -->
+                <div class="bg-white p-8 rounded-xl border border-gray-200">
+                    <div class="flex items-center mb-6">
+                        <!--<div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold mr-4">3</div>-->
+                        <h3 class="text-xl font-bold text-gray-900">Monitor & Relax</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">Your site is now protected! View threats blocked and security analytics in your dashboard.</p>
+                    <!--<div class="flex justify-center">
+                        <i class="fas fa-check-circle text-green-500 text-4xl"></i>
+                    </div>-->
+                </div>
+            </div>
+            
+            <div class="mt-16 bg-white rounded-xl border border-gray-200 overflow-hidden">
+                <div class="md:flex">
+                    <div class="md:w-1/2 p-8 md:p-12">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">Real-Time Threat Monitoring</h3>
+                        <p class="text-gray-600 mb-6">Our AI engine continuously analyzes your website traffic, identifying and neutralizing threats as they emerge. The system learns from each interaction, becoming smarter over time.</p>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                                <span class="text-gray-700">24/7 automated protection</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                                <span class="text-gray-700">Behavioral analysis detects zero-day attacks</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                                <span class="text-gray-700">Automatic security updates</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="md:w-1/2 bg-gray-100 flex items-center justify-center p-8">
+                        <div class="relative w-full max-w-md">
+                            <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                                <div class="bg-gray-800 py-2 px-4 flex items-center">
+                                    <div class="text-white text-sm font-mono">Threat Detection Log</div>
+                                </div>
+                                <div class="p-4">
+                                    <div class="space-y-4">
+                                        <div class="flex justify-between items-center p-3 bg-red-50 rounded-lg">
+                                            <div class="flex items-center">
+                                                <i class="fas fa-times-circle text-red-500 mr-2"></i>
+                                                <span class="text-sm font-medium">XSS Attempt Blocked</span>
+                                            </div>
+                                            <span class="text-xs text-gray-500">2 sec ago</span>
+                                        </div>
+                                        <div class="flex justify-between items-center p-3 bg-yellow-50 rounded-lg">
+                                            <div class="flex items-center">
+                                                <i class="fas fa-exclamation-triangle text-yellow-500 mr-2"></i>
+                                                <span class="text-sm font-medium">Suspicious Activity</span>
+                                            </div>
+                                            <span class="text-xs text-gray-500">5 min ago</span>
+                                        </div>
+                                        <div class="flex justify-between items-center p-3 bg-green-50 rounded-lg">
+                                            <div class="flex items-center">
+                                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                                <span class="text-sm font-medium">SQL Injection Prevented</span>
+                                            </div>
+                                            <span class="text-xs text-gray-500">12 min ago</span>
+                                        </div>
+                                    </div>
+                                    <div class="mt-6">
+                                        <div class="text-sm font-medium text-gray-700 mb-2">Threats Blocked Today: <span class="font-bold">27</span></div>
+                                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                            <div class="bg-blue-600 h-2.5 rounded-full" style="width: 85%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+     <section id="pricing" class="py-20 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Title & Description -->
+    <div class="text-center mb-16">
+      <h2 class="text-3xl font-bold text-gray-900 mb-4">Budget-Friendly Plans for Every Website</h2>
+      <p class="text-xl text-gray-600 max-w-3xl mx-auto">Whether you're running a personal blog or a large e-commerce site, pick a plan that suits your needs in Bangladesh.</p>
+    </div>
+
+    <!-- Plan Options -->
+    <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+      <!-- Starter Tier -->
+      <div class="bg-white rounded-xl border border-gray-200 hover:border-blue-500 transition duration-300">
+        <div class="p-8">
+          <h3 class="text-2xl font-semibold text-gray-900 mb-2">Starter</h3>
+          <p class="text-gray-600 mb-6">Great for personal sites, student portfolios, or small local blogs</p>
+          <div class="mb-6">
+            <span class="text-4xl font-bold text-gray-900">800tk</span>
+            <span class="text-gray-600">per month</span>
+          </div>
+          <ul class="space-y-3 mb-8">
+            <li class="flex items-start"><i class="fas fa-check text-green-500 mt-1 mr-2"></i><span>1 Website</span></li>
+            <li class="flex items-start"><i class="fas fa-check text-green-500 mt-1 mr-2"></i><span>Basic Security Features</span></li>
+            <li class="flex items-start"><i class="fas fa-check text-green-500 mt-1 mr-2"></i><span>Up to 10,000 Visitors</span></li>
+            <li class="flex items-start"><i class="fas fa-check text-green-500 mt-1 mr-2"></i><span>Email Notifications</span></li>
+            <li class="flex items-start text-gray-400"><i class="fas fa-times mt-1 mr-2"></i><span>No Auto-Recovery</span></li>
+          </ul>
+          <a href="#signup" class="block w-full bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold py-3 px-4 rounded-lg text-center transition">Get Started</a>
+        </div>
+      </div>
+
+      <!-- Professional Tier -->
+      <div class="bg-white rounded-xl border-2 border-blue-500 shadow-lg transform scale-105 z-10">
+        <div class="p-8">
+          <div class="flex justify-between items-start mb-2">
+            <h3 class="text-2xl font-semibold text-gray-900">Professional</h3>
+            <span class="bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded-full">Most Popular</span>
+          </div>
+          <p class="text-gray-600 mb-6">Perfect for local businesses, startups, and online stores</p>
+          <div class="mb-6">
+            <span class="text-4xl font-bold text-gray-900">2,500tk</span>
+            <span class="text-gray-600">per month</span>
+          </div>
+          <ul class="space-y-3 mb-8">
+            <li class="flex items-start"><i class="fas fa-check text-green-500 mt-1 mr-2"></i><span>Up to 5 Websites</span></li>
+            <li class="flex items-start"><i class="fas fa-check text-green-500 mt-1 mr-2"></i><span>Advanced Protection</span></li>
+            <li class="flex items-start"><i class="fas fa-check text-green-500 mt-1 mr-2"></i><span>Up to 50,000 Visitors</span></li>
+            <li class="flex items-start"><i class="fas fa-check text-green-500 mt-1 mr-2"></i><span>SMS & Email Alerts</span></li>
+            <li class="flex items-start"><i class="fas fa-check text-green-500 mt-1 mr-2"></i><span>Automatic Recovery System</span></li>
+          </ul>
+          <a href="#signup" class="block w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg text-center transition">Choose Plan</a>
+        </div>
+      </div>
+
+      <!-- Enterprise Tier -->
+      <div class="bg-white rounded-xl border border-gray-200 hover:border-blue-500 transition duration-300">
+        <div class="p-8">
+          <h3 class="text-2xl font-semibold text-gray-900 mb-2">Enterprise</h3>
+          <p class="text-gray-600 mb-6">Built for large-scale platforms, institutions, and organizations in Bangladesh</p>
+          <div class="mb-6">
+            <span class="text-4xl font-bold text-gray-900">6,000tk</span>
+            <span class="text-gray-600">per month</span>
+          </div>
+          <ul class="space-y-3 mb-8">
+            <li class="flex items-start"><i class="fas fa-check text-green-500 mt-1 mr-2"></i><span>Unlimited Websites</span></li>
+            <li class="flex items-start"><i class="fas fa-check text-green-500 mt-1 mr-2"></i><span>Premium Security</span></li>
+            <li class="flex items-start"><i class="fas fa-check text-green-500 mt-1 mr-2"></i><span>Up to 500,000 Visitors</span></li>
+            <li class="flex items-start"><i class="fas fa-check text-green-500 mt-1 mr-2"></i><span>Priority Customer Support</span></li>
+            <li class="flex items-start"><i class="fas fa-check text-green-500 mt-1 mr-2"></i><span>Dedicated Security Expert</span></li>
+          </ul>
+          <a href="#signup" class="block w-full bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold py-3 px-4 rounded-lg text-center transition">Get Premium Access</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Custom Inquiry -->
+    <div class="mt-12 text-center">
+      <p class="text-gray-600">Need a custom plan for your agency or institution? <a href="#contact" class="text-blue-600 hover:text-blue-800 font-medium">Contact our team</a> and we’ll build a package just for you.</p>
+    </div>
+  </div>
+</section>
+
+
+
+    <!-- Review Section -->
+<section id="reviews" class="py-20 bg-gray-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Section Title -->
+    <div class="text-center mb-16">
+      <h2 class="text-3xl font-bold text-gray-900 mb-4">Customer Reviews</h2>
+      <p class="text-xl text-gray-600 max-w-3xl mx-auto">Businesses across Bangladesh share how our service helps them every day.</p>
+    </div>
+
+    <!-- Reviews Grid -->
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- Review 1 -->
+      <div class="bg-white p-8 rounded-xl border border-gray-200">
+        <div class="flex items-center mb-4">
+          <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-xl mr-4">FR</div>
+          <div>
+            <h4 class="font-semibold text-gray-900">Jawad Rahman</h4>
+            <p class="text-sm text-gray-600">IT Manager, NextGen IT</p>
+          </div>
+        </div>
+        <div class="flex space-x-1 mb-4 text-yellow-400">
+          <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+        </div>
+        <p class="text-gray-700">“The system is simple and powerful. It blocked threats without us doing anything. Perfect for fast-moving teams like ours.”</p>
+      </div>
+
+      <!-- Review 2 -->
+      <div class="bg-white p-8 rounded-xl border border-gray-200">
+        <div class="flex items-center mb-4">
+          <div class="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 font-bold text-xl mr-4">RA</div>
+          <div>
+            <h4 class="font-semibold text-gray-900">Nazib Ahmed</h4>
+            <p class="text-sm text-gray-600">Founder, Techbd Solutions</p>
+          </div>
+        </div>
+        <div class="flex space-x-1 mb-4 text-yellow-400">
+          <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+        </div>
+        <p class="text-gray-700">“As a startup, we needed something that works well and doesn't cost a lot. This tool gave us strong protection and peace of mind.”</p>
+      </div>
+
+      <!-- Review 3 -->
+      <div class="bg-white p-8 rounded-xl border border-gray-200">
+        <div class="flex items-center mb-4">
+          <div class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center text-green-600 font-bold text-xl mr-4">SS</div>
+          <div>
+            <h4 class="font-semibold text-gray-900">Afsar Mahmud</h4>
+            <p class="text-sm text-gray-600">Security Lead, DataFort BD</p>
+          </div>
+        </div>
+        <div class="flex space-x-1 mb-4 text-yellow-400">
+          <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+        </div>
+        <p class="text-gray-700">“Our site was attacked, but the auto-recovery feature solved everything in minutes. No panic, no downtime.”</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+    <!-- CTA Section -->
+    <section id="signup" class="hero-gradient text-white py-20">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-6">Ready to Secure Your Website?</h2>
+            <p class="text-xl mb-8 max-w-3xl mx-auto opacity-90">Join thousands of businesses protecting their websites with Web Shield AI. Start your free 14-day trial today.</p>
+            <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+                <a href="#signup" class="bg-white text-blue-600 hover:bg-gray-100 px-8 py-4 rounded-lg font-semibold text-lg transition duration-300 glow">
+                    Get Started - Free Trial
+                </a>
+                <a href="#demo" class="border-2 border-white text-white hover:bg-white hover:text-blue-600 px-8 py-4 rounded-lg font-semibold text-lg transition duration-300">
+                    Schedule a Demo
+                </a>
+            </div>
+            <p class="mt-6 text-blue-100">No credit card required. Cancel anytime.</p>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="py-20 bg-white">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h2>
+                <p class="text-xl text-gray-600">Find answers to common questions about Web Shield AI.</p>
+            </div>
+            
+            <div class="space-y-6">
+                <!-- FAQ 1 -->
+                <div class="border border-gray-200 rounded-xl overflow-hidden">
+                    <button class="faq-toggle w-full flex justify-between items-center p-6 text-left focus:outline-none">
+                        <h3 class="text-lg font-medium text-gray-900">How does the AI detection work?</h3>
+                        <i class="fas fa-chevron-down text-gray-500 transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-6">
+                        <p class="text-gray-600">Our AI engine uses machine learning to analyze patterns in web traffic and user behavior. It's trained on millions of attack samples and continuously learns from new threats. The system evaluates each request against hundreds of parameters to identify malicious intent, even for previously unknown attack vectors.</p>
+                    </div>
+                </div>
+                
+                <!-- FAQ 2 -->
+                <div class="border border-gray-200 rounded-xl overflow-hidden">
+                    <button class="faq-toggle w-full flex justify-between items-center p-6 text-left focus:outline-none">
+                        <h3 class="text-lg font-medium text-gray-900">Will Web Shield AI slow down my website?</h3>
+                        <i class="fas fa-chevron-down text-gray-500 transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-6">
+                        <p class="text-gray-600">No, our solution is designed to have minimal impact on your site's performance. The JavaScript snippet is lightweight (less than 15KB), and our edge network processes security checks in milliseconds. Most customers report no noticeable difference in page load times.</p>
+                    </div>
+                </div>
+                
+                <!-- FAQ 3 -->
+                <div class="border border-gray-200 rounded-xl overflow-hidden">
+                    <button class="faq-toggle w-full flex justify-between items-center p-6 text-left focus:outline-none">
+                        <h3 class="text-lg font-medium text-gray-900">What happens during the free trial?</h3>
+                        <i class="fas fa-chevron-down text-gray-500 transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-6">
+                        <p class="text-gray-600">The 14-day free trial gives you full access to all Professional plan features. You can protect one website and experience all the security benefits with no limitations. No credit card is required to start the trial, and you can cancel anytime before it ends with no obligation.</p>
+                    </div>
+                </div>
+                
+                <!-- FAQ 4 -->
+                <div class="border border-gray-200 rounded-xl overflow-hidden">
+                    <button class="faq-toggle w-full flex justify-between items-center p-6 text-left focus:outline-none">
+                        <h3 class="text-lg font-medium text-gray-900">How does the auto-recovery feature work?</h3>
+                        <i class="fas fa-chevron-down text-gray-500 transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-6">
+                        <p class="text-gray-600">Our system continuously monitors your website's core files and database. If unauthorized changes are detected (like in a defacement attack), Web Shield AI can automatically restore the affected files to their last known good state from our secure backups. You can also trigger manual restores from your dashboard.</p>
+                    </div>
+                </div>
+                
+                <!-- FAQ 5 -->
+                <div class="border border-gray-200 rounded-xl overflow-hidden">
+                    <button class="faq-toggle w-full flex justify-between items-center p-6 text-left focus:outline-none">
+                        <h3 class="text-lg font-medium text-gray-900">Do you offer support for implementation?</h3>
+                        <i class="fas fa-chevron-down text-gray-500 transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-6">
+                        <p class="text-gray-600">Yes! Our documentation covers all implementation scenarios, and our support team is available to help with any questions. Enterprise plans include dedicated onboarding sessions with our security experts to ensure optimal configuration for your specific environment.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
+                <!-- Column 1 -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Product</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#features" class="text-gray-400 hover:text-white transition">Features</a></li>
+                        <li><a href="#pricing" class="text-gray-400 hover:text-white transition">Pricing</a></li>
+                        <li><a href="#demo" class="text-gray-400 hover:text-white transition">Demo</a></li>
+                        <li><a href="#updates" class="text-gray-400 hover:text-white transition">Updates</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Column 2 -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Resources</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#blog" class="text-gray-400 hover:text-white transition">Blog</a></li>
+                        <li><a href="#docs" class="text-gray-400 hover:text-white transition">Documentation</a></li>
+                        <li><a href="#guides" class="text-gray-400 hover:text-white transition">Guides</a></li>
+                        <li><a href="#api" class="text-gray-400 hover:text-white transition">API Reference</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Column 3 -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Company</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#about" class="text-gray-400 hover:text-white transition">About Us</a></li>
+                        <li><a href="#careers" class="text-gray-400 hover:text-white transition">Careers</a></li>
+                        <li><a href="#press" class="text-gray-400 hover:text-white transition">Press</a></li>
+                        <li><a href="#contact" class="text-gray-400 hover:text-white transition">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Column 4 -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Legal</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#privacy" class="text-gray-400 hover:text-white transition">Privacy</a></li>
+                        <li><a href="#terms" class="text-gray-400 hover:text-white transition">Terms</a></li>
+                        <li><a href="#security" class="text-gray-400 hover:text-white transition">Security</a></li>
+                        <li><a href="#compliance" class="text-gray-400 hover:text-white transition">Compliance</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 pt-8 md:flex md:items-center md:justify-between">
+                <div class="flex justify-center md:order-2 space-x-6 mb-6 md:mb-0">
+                    <a href="#twitter" class="text-gray-400 hover:text-white">
+                        <i class="fab fa-twitter text-xl"></i>
+                    </a>
+                    <a href="#facebook" class="text-gray-400 hover:text-white">
+                        <i class="fab fa-facebook text-xl"></i>
+                    </a>
+                    <a href="#linkedin" class="text-gray-400 hover:text-white">
+                        <i class="fab fa-linkedin text-xl"></i>
+                    </a>
+                    <a href="#github" class="text-gray-400 hover:text-white">
+                        <i class="fab fa-github text-xl"></i>
+                    </a>
+                </div>
+                <div class="text-center md:text-left md:order-1">
+                    <p class="text-gray-400 text-sm">&copy; 2025 Web Shield AI. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // FAQ toggle functionality
+        document.querySelectorAll('.faq-toggle').forEach(button => {
+            button.addEventListener('click', () => {
+                const content = button.nextElementSibling;
+                const icon = button.querySelector('i');
+                
+                // Toggle content visibility
+                content.classList.toggle('hidden');
+                
+                // Rotate icon
+                if (content.classList.contains('hidden')) {
+                    icon.style.transform = 'rotate(0deg)';
+                } else {
+                    icon.style.transform = 'rotate(180deg)';
+                }
+            });
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Mobile menu toggle would go here (if implemented)
+    </script>
+</body>
+</html>

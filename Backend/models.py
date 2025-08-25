@@ -1,0 +1,85 @@
+from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime, Text, JSON, Boolean, BigInteger
+from sqlalchemy.orm import relationship
+from datetime import datetime
+from db import Base
+from sqlalchemy.sql import func
+
+class User(Base):
+    __tablename__ = 'users'
+    id = Column(Integer, primary_key=True, index=True)
+    email = Column(String, unique=True, index=True)
+    name = Column(String)
+    plan = Column(String, default='free')
+    hashed_password = Column(String)
+    websites = relationship("Website", back_populates="owner")
+
+class Website(Base):
+    __tablename__ = 'websites'
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String)
+    url = Column(String)
+    user_id = Column(Integer, ForeignKey('users.id'))
+    owner = relationship("User", back_populates="websites")
+    defacement_enabled = Column(Boolean, default=False)
+    sqli_enabled = Column(Boolean, default=False)
+    dom_enabled = Column(Boolean, default=False)
+    xss_enabled = Column(Boolean, default=False)
+    sql_logs = relationship("SQLLog", back_populates="website")
+    dom_logs = relationship("DomManipulationLog", back_populates="website")
+    defacement_logs = relationship("DefacementLog", back_populates="website")
+    XSS_logs = relationship("XSSLog", back_populates="website")
+
+class SQLLog(Base):
+    __tablename__ = 'sql_logs'
+    
+    id = Column(Integer, primary_key=True, index=True)
+    website_id = Column(Integer, ForeignKey('websites.id'))
+    query = Column(Text)
+    prediction = Column(String)
+    score = Column(Float)
+    created_at = Column(DateTime, default=datetime.now)
+    
+    website = relationship("Website", back_populates="sql_logs")
+    
+    
+class DefacementLog(Base):
+    __tablename__ = 'defacement_logs'
+
+    id = Column(Integer, primary_key=True, index=True)
+    website_id = Column(Integer, ForeignKey('websites.id'))
+    prediction = Column(String)
+    timestamp = Column(DateTime, default=datetime.now)
+
+    website = relationship("Website", back_populates="defacement_logs")
+    
+class DomManipulationLog(Base):
+    __tablename__ = "dom_logs"
+
+    id = Column(Integer, primary_key=True, index=True)
+    website_id = Column(Integer, ForeignKey('websites.id'))
+    ip_address = Column(String)
+    created_at = Column(DateTime, default=datetime.now)
+    
+    website = relationship("Website", back_populates="dom_logs")
+
+
+class XSSLog(Base):
+    __tablename__ = "XSS_logs"
+
+    id = Column(Integer, primary_key=True, index=True)
+    website_id = Column(Integer, ForeignKey('websites.id'))
+    ip_address = Column(String)
+    created_at = Column(DateTime, default=datetime.now)
+    
+    website = relationship("Website", back_populates="XSS_logs")
+    
+class UptimeCheck(Base):
+    __tablename__ = "uptime_checks"
+
+    id = Column(BigInteger, primary_key=True, index=True)
+    website_id = Column(Integer, ForeignKey("websites.id", ondelete="CASCADE"), index=True, nullable=False)
+    status_up = Column(Boolean, nullable=False)
+    status_code = Column(Integer, nullable=True)
+    response_ms = Column(Integer, nullable=True)
+    error = Column(Text, nullable=True)
+    checked_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)

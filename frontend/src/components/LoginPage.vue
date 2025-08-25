@@ -1,0 +1,118 @@
+<template>
+  <div class="bg-gray-900 min-h-screen flex items-center justify-center p-4">
+    <div class="w-full max-w-md bg-gray-800 text-white rounded-lg shadow-lg p-8">
+      <!-- Logo and Title -->
+      <div class="flex items-center justify-center mb-6">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-8 w-8 text-blue-500"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M9 12l2 2 4-4M5 4a12 12 0 0114 0"
+          />
+        </svg>
+        <span class="ml-2 text-xl font-bold">WebShieldAI</span>
+      </div>
+
+      <!-- Heading -->
+      <h2 class="text-xl font-bold mb-4 text-center">Welcome Back</h2>
+
+      <!-- Login Form -->
+      <form @submit.prevent="handleLogin">
+        <label class="block mb-2 text-sm">Email</label>
+        <input
+          v-model="email"
+          type="email"
+          required
+          class="w-full mb-4 px-3 py-2 rounded bg-gray-700 border border-gray-600 focus:ring-2 focus:ring-blue-500"
+        />
+
+        <label class="block mb-2 text-sm">Password</label>
+        <input
+          v-model="password"
+          type="password"
+          required
+          class="w-full mb-4 px-3 py-2 rounded bg-gray-700 border border-gray-600 focus:ring-2 focus:ring-blue-500"
+        />
+
+        <div class="flex items-center justify-between mb-4">
+          <label class="flex items-center text-sm">
+            <input type="checkbox" class="mr-2" v-model="rememberMe" /> Remember me
+          </label>
+          <a href="#" class="text-sm text-blue-400 hover:text-blue-300"
+            >Forgot password?</a
+          >
+        </div>
+
+        <button
+          type="submit"
+          class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded"
+        >
+          Sign in
+        </button>
+        <p v-if="errorMessage" class="text-red-400 text-sm mt-2 text-center">
+          {{ errorMessage }}
+        </p>
+      </form>
+
+      <!-- Signup Link -->
+      <p class="text-sm text-center mt-4 text-gray-400">
+        Don't have an account?
+        <router-link to="/signup" class="text-blue-400 hover:text-blue-300"
+          >Sign up</router-link
+        >
+      </p>
+
+      <!-- Footer -->
+      <p class="mt-6 text-center text-xs text-gray-500">
+        © 2025 WebShieldAI. All rights reserved.
+      </p>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+import axios from "axios";
+
+const router = useRouter();
+
+const email = ref("");
+const password = ref("");
+const rememberMe = ref(false);
+
+const errorMessage = ref("");
+const isLoading = ref(false);
+
+// import { onMounted } from "vue";
+// onMounted(() => {
+//   console.log("LoginPage.vue is rendering")
+// })
+import api from '../composables/axios'
+async function handleLogin() {
+  isLoading.value = true;
+  errorMessage.value = "";
+
+  try {
+    const response = await api.post("/login", {
+      email: email.value,
+      password: password.value,
+    });
+
+    // If login succeeds, redirect to dashboard
+    router.push("/dashboard");
+  } catch (err) {
+    errorMessage.value = "Invalid email or password!";
+    console.error(err);
+  } finally {
+    isLoading.value = false;
+  }
+}
+</script>
