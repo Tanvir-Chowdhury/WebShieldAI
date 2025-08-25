@@ -1,16 +1,6 @@
 # WebShield AI  
 **AI Powered Web Intrusion Detection and Auto-Defense SaaS Platform**
 
-### Authors
-- Md. Tanvir Chowdhury (2232122642)  
-- Nurjahan Bint Hamid (2212396642)  
-- Shahida Akter (2222446642)  
-
-**Instructor:** Muhammad Shafayat Oshman  
-**Course:** CSE 299: Junior Design, Section 10  
-
----
-
 ## 📌 Introduction
 The rapid growth of the internet and web-based platforms has created unprecedented opportunities for businesses, governments, and individuals. However, this expansion has also brought a sharp increase in cyberattacks such as **SQL Injection (SQLi), Cross-Site Scripting (XSS), DOM manipulation, and website defacement**.  
 
