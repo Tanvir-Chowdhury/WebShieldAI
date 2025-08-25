@@ -86,15 +86,15 @@ Most traditional website security solutions:
   - **Log and notify** the admin in real-time  
 
 📸 **Dashboard Screenshots:**  
-![Dashboard](529d7484-f303-47ff-ab2c-be76fb30a140.png)  
-![Protected Websites](6cc276a0-4d64-4054-bb93-f3f27a09bb85.png)  
-![Global Attack Logs](ae67e832-b4c4-4e9e-97f2-5307af3b0d25.png)  
-![Website Security Details](5f0f8320-bac2-4720-897e-f603eed56808.png)  
+![Dashboard](ss1.png)  
+![Protected Websites](ss2.png)  
+![Global Attack Logs](ss3.png)  
+![Website Security Details](ss4.png)  
 
 ---
 
 ## 📊 Project Flowchart
-![Flowchart](flowchart%20(1).png)
+![Flowchart](flowchart.png)
 
 ---
 
