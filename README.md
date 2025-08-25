@@ -94,7 +94,7 @@ Most traditional website security solutions:
 ---
 
 ## 📊 Project Flowchart
-![Flowchart](flowchart.png)
+![Flowchart](flowchart2.png)
 
 ---
 
