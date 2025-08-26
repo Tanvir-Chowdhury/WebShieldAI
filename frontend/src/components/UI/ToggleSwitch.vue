@@ -1,20 +1,17 @@
 <template>
   <label class="flex items-center cursor-pointer">
-    <!-- Hidden checkbox -->
     <input
       type="checkbox"
       class="hidden"
       :checked="modelValue"
       @change="handleClick"
     />
-    <!-- Toggle background -->
     <div
       :class="[
         'w-10 h-5 rounded-full transition-colors duration-300',
         modelValue ? 'bg-blue-500' : 'bg-gray-600'
       ]"
     >
-      <!-- Toggle circle -->
       <div
         :class="[
           'w-5 h-5 bg-white rounded-full shadow transform transition-transform duration-300',

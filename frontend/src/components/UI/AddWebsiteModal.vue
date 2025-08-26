@@ -1,5 +1,4 @@
 <template>
-  <!-- v-if="isOpen" -->
   <div
     
     class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50"
@@ -51,14 +50,13 @@
 <script setup lang="ts">
 
 import { ref, onMounted } from "vue";
-import api from "../../composables/axios"; // assumes axios instance is in composables
+import api from "../../composables/axios"; 
 
 const emit = defineEmits<{
   (e: 'add'): void;
   (e: 'close'): void;
 }>();
 
-// const props = defineProps<{ modelValue: boolean }>();
 const existingWebsites = ref<string[]>([]);
 
 const form = ref({

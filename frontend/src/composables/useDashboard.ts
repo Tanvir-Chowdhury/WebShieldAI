@@ -140,10 +140,8 @@ export function useDashboard() {
     return { perSite, allAttacks };
   };
 
-  // ---- NEW: per-site blocked counts from backend ----
   const refreshSiteBlockedCount = async (websiteId: number) => {
     try {
-      // Your backend endpoint that returns: { xss, dom, sql_injection, total }
       const { data } = await api.get(`/websites/${websiteId}/blocked-count`, {
         withCredentials: true,
       });
@@ -197,7 +195,6 @@ export function useDashboard() {
     }
   };
 
-  // NEW: global total blocked count (sum across all logs for this user)
   const refreshGlobalBlockedCount = async () => {
     try {
       const { data } = await api.get("/me/attack-logs/total-count", { withCredentials: true });
@@ -213,17 +210,16 @@ export function useDashboard() {
       const res = await api.get("/websites/", { withCredentials: true });
       websites.value = (Array.isArray(res.data) ? res.data : []).map(mapWebsite);
 
-      // Fill attacks for UI context
+   
       await fetchAllAttackLogsForUser();
 
-      // Pull per-site blocked counts
+
       await refreshAllSitesBlockedCounts();
 
-      // Pull uptime/latency metrics
+
       await Promise.all(websites.value.map((w) => refreshSiteMetrics(toNum(w.id))));
       await refreshGlobalUptimeSummary();
 
-      // Global total blocked (card at top)
       await refreshGlobalBlockedCount();
     } catch (error) {
       console.error("Failed to fetch websites:", error);
@@ -258,7 +254,7 @@ export function useDashboard() {
     return {
       totalWebsites: totals.totalWebsites,
       activeThreats: totals.activeThreats,
-      blockedAttacks: totalBlockedCount.value, // TOP CARD uses global total from backend
+      blockedAttacks: totalBlockedCount.value, 
       uptime,
     };
   });
@@ -394,13 +390,13 @@ export function useDashboard() {
     isDetailsModalOpen.value = true;
     await fetchAttackLogs(site.id);
     await refreshSiteMetrics(toNum(site.id));
-    await refreshSiteBlockedCount(toNum(site.id)); // keep card number accurate
+    await refreshSiteBlockedCount(toNum(site.id)); 
   };
 
   const refreshWebsiteById = async (id: string | number) => {
     await fetchAttackLogs(id);
     await refreshSiteMetrics(toNum(id));
-    await refreshSiteBlockedCount(toNum(id)); // update per-site blocked count too
+    await refreshSiteBlockedCount(toNum(id)); 
   };
 
   const refreshAllWebsites = async () => {

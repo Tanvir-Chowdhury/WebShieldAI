@@ -196,7 +196,6 @@ def global_uptime_summary(days: int = Query(7, ge=1, le=90),
 async def toggle_defacement_route(website_id: int, enable: bool, db: Session = Depends(get_db), current_user = Depends(get_current_user)):
     return await toggle_defacement(website_id, enable, current_user)
   
-# Toggle protection (SQL, XSS, Defacement)
 @app.post("/websites/{website_id}/update-protection")
 def update_protection(
     website_id: int,
@@ -224,7 +223,6 @@ def website_id_filter(col, website_id: int):
         return col == website_id
     if isinstance(col.type, String):
         return col == str(website_id)
-    # default fallback
     return col == website_id
   
 @app.get("/websites/{website_id}/attack-logs", response_model=List[schemas.AttackLogOut])
@@ -588,7 +586,6 @@ async def check_cdn_code(
     db: Session = Depends(get_db)
 ):
     try:
-        # 1. Fetch website by ID
         website = db.query(models.Website).filter(models.Website.id == wid).first()
         if not website:
             return {"success": False, "error": "Website not found"}
@@ -597,7 +594,6 @@ async def check_cdn_code(
         response = requests.get(url, timeout=5)
         html_content = response.text
 
-        # 2. Compare using expected script received from frontend
         if expected_script in html_content:
             return {"success": True}
         else:
@@ -644,7 +640,7 @@ def serve_xss_agent(request: Request, db: Session = Depends(get_db)):
     if not site or not site.xss_enabled:
         return Response('/* XSS disabled or site missing */', media_type="application/javascript")
 
-    api_base = str(request.base_url).rstrip("/")  # -> http://127.0.0.1:8000
+    api_base = str(request.base_url).rstrip("/")  
 
     js = f"""
 (function() {{
@@ -668,7 +664,6 @@ def serve_xss_agent(request: Request, db: Session = Depends(get_db)):
   function isMalicious(v) {{ return suspiciousPatterns.some(re => re.test(v)); }}
 
   function reportXSS(vector, payload) {{
-    // keepalive helps the POST survive the immediate redirect
     fetch(API_BASE + "/api/xss-report", {{
       method: "POST",
       headers: {{ "Content-Type": "application/json" }},
@@ -692,7 +687,7 @@ def serve_xss_agent(request: Request, db: Session = Depends(get_db)):
     reportXSS(vector, value);
     if (!DEBUG) {{
       alert("Script Injection Detected! Redirecting to home…");
-      // small delay so the POST fires; replace() avoids back button loop
+    
       setTimeout(() => window.location.replace("/"), 100);
     }} else {{
       console.warn("[WebShield] (debug) Detected XSS, no redirect.");
@@ -787,7 +782,6 @@ def serve_dom_defacement_agent(request: Request, db: Session = Depends(get_db)):
     debug = request.query_params.get("debug") == "1"
 
     site = db.query(models.Website).filter(models.Website.id == wid).first()
-    # Toggle here: use `site.defacement_enabled` if that's your switch
     if not site or not site.dom_enabled:
         return Response('/* DOM agent disabled or site missing */', media_type="application/javascript")
 
@@ -823,9 +817,9 @@ def serve_dom_defacement_agent(request: Request, db: Session = Depends(get_db)):
       headers: {{ "Content-Type": "application/json" }},
       body: JSON.stringify({{
         website_id: WID,
-        kind,           // "added-suspicious" | "removed-nonallowed"
-        tag,            // e.g., "SCRIPT"
-        snippet,        // small outerHTML slice if available
+        kind,          
+        tag,          
+        snippet,       
         page_url: window.location.href,
         occurred_at: new Date().toISOString()
       }}),
@@ -908,13 +902,11 @@ async def dom_report(
 
     # Lookup website & feature flag
     site = db.query(models.Website).filter(models.Website.id == website_id).first()
-    # Toggle here: use `site.defacement_enabled` if that's your switch
     if not site or not site.dom_enabled:
         raise HTTPException(403, "DOM protection disabled or site missing")
 
     ip = get_client_ip(request)
 
-    # ✅ Save only on detection
     new_log = models.DomManipulationLog(
         website_id=website_id,
         ip_address=ip
@@ -922,7 +914,6 @@ async def dom_report(
     db.add(new_log)
     db.commit()
 
-    # Email (background)
     user = db.query(models.User).filter(models.User.id == site.user_id).first()
     if user and user.email:
         subject = f"[WebShield AI] DOM tampering on {site.name}"
@@ -939,92 +930,3 @@ async def dom_report(
 
 
 
-
-
-# def serve_dom_defacement_agent(request: Request, db: Session = Depends(get_db)):
-#     website_id = request.query_params.get("wid", "0")
-
-#     client_ip = request.client.host
-
-#     # Store log immediately in DB (as this JS is being served)
-#     new_log = models.DomManipulationLog(
-#         website_id=website_id,
-#         ip_address=client_ip
-#     )
-#     db.add(new_log)
-#     db.commit()
-    
-#     site = db.query(models.Website).filter(models.Website.id == website_id).first()
-#     if not site:
-#         raise HTTPException(404, detail="Website not found")
-    
-#     user = db.query(models.User).filter(models.User.id == site.user_id).first()
-#     if not user or not user.email:
-#         raise HTTPException(404, detail="Owner email not found")
-    
-#     website_name = site.name
-#     website_url = site.url
-#     owner_email = user.email
-#     # website_name, website_url, owner_email = get_site_primitives(db, website_id, current_user.id)
-
-#     ts =datetime.utcnow()
-#     subject = f"[Web Shield AI] DOM tampering on {website_name}"
-#     html = build_threat_email_html(
-#         website_name=website_name, website_url=website_url,
-#         log_type="dom", occurred_at=ts, ip_address=client_ip
-#     )
-#     try:
-#         send_email_now(owner_email, subject, html)
-#     except Exception as e:
-#         print("Email send error:", e) 
-
-#     js_code = f"""
-# (function () {{
-#   console.log("WebShield DOM Agent loading for Website ID: {website_id}");
-
-#   const allowedTags = ["DIV", "SPAN", "P", "A", "INPUT", "TEXTAREA", "BUTTON"];
-#   const suspiciousTags = ["SCRIPT", "IFRAME", "EMBED", "OBJECT", "LINK", "STYLE"];
-
-#   function isSuspiciousNode(node) {{
-#     if (!node || !node.tagName) return false;
-#     return suspiciousTags.includes(node.tagName.toUpperCase());
-#   }}
-
-#   function handleMutation(mutation) {{
-#     if (mutation.type === "childList") {{
-#       for (let node of mutation.addedNodes) {{
-#         if (isSuspiciousNode(node)) {{
-#           alert("Suspicious DOM element added: " + node.tagName);
-#           location.reload();
-#           return;
-#         }}
-#       }}
-#       for (let node of mutation.removedNodes) {{
-#         if (node.nodeType === 1 && !allowedTags.includes(node.tagName.toUpperCase())) {{
-#           alert("Important DOM element removed: " + node.tagName);
-#           location.reload();
-#           return;
-#         }}
-#       }}
-#     }}
-#   }}
-
-#   window.addEventListener("load", function () {{
-#     console.log("DOM fully loaded. Starting mutation observer...");
-
-#     const observer = new MutationObserver(function (mutationsList) {{
-#       for (const mutation of mutationsList) {{
-#         handleMutation(mutation);
-#       }}
-#     }});
-
-#     observer.observe(document.body, {{
-#       childList: true,
-#       subtree: true,
-#     }});
-
-#     console.log("WebShield DOM Agent activated.");
-#   }});
-# }})();
-# """
-#     return Response(content=js_code, media_type="application/javascript")

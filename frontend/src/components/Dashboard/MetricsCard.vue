@@ -78,18 +78,18 @@ const iconClass = computed(() => {
   }
 });
 
-const changeClass = computed(() => {
-  switch (props.changeType) {
-    case 'positive':
-      return 'text-green-500';
-    case 'negative':
-      return 'text-red-500';
-    default:
-      return 'text-gray-400';
-  }
-});
+// const changeClass = computed(() => {
+//   switch (props.changeType) {
+//     case 'positive':
+//       return 'text-green-500';
+//     case 'negative':
+//       return 'text-red-500';
+//     default:
+//       return 'text-gray-400';
+//   }
+// });
 
-const changeIcon = computed(() => {
-  return props.changeType === 'positive' ? ArrowUpIcon : ArrowDownIcon;
-});
+// const changeIcon = computed(() => {
+//   return props.changeType === 'positive' ? ArrowUpIcon : ArrowDownIcon;
+// });
 </script>

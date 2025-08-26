@@ -28,16 +28,9 @@ DOM:
     console.log("Iframe injected");
   }
 
-  // Option 1: Run automatically after 3 seconds
   setTimeout(testDOMManipulation, 3000);
 
-  // Option 2: Or trigger via button
-  /*
-  const button = document.createElement("button");
-  button.innerText = "Run DOM Test";
-  button.onclick = testDOMManipulation;
-  document.body.appendChild(button);
-  */
+
 
 
 

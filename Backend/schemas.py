@@ -66,9 +66,9 @@ class ProtectionUpdate(BaseModel):
     
 class AttackLogOut(BaseModel):
     id: int
-    type: str                 # "xss" | "defacement" | "dom" | "sql"
+    type: str                 
     website_id: Union[int, str]
-    occurred_at: datetime     # normalized timestamp
+    occurred_at: datetime    
     ip_address: Optional[str] = None
     query: Optional[str] = None
     prediction: Optional[str] = None

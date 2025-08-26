@@ -66,7 +66,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import api from "../../composables/axios"; // adjust path as needed
+import api from "../../composables/axios"; 
 
 const props = defineProps<{
   code: string;
@@ -84,7 +84,6 @@ function copyCode() {
   copied.value = true;
 }
 
-// Auto-check via FastAPI endpoint
 async function checkCDNCode() {
   checking.value = true;
 

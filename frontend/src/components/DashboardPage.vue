@@ -139,7 +139,6 @@ export interface Attack {
   location?: string;
 }
 
-// Use composable
 const {
   websites,
   selectedWebsite,
@@ -160,7 +159,6 @@ const {
 } = useDashboard();
 
 const allAttacks = ref<Attack[]>([]);
-// On load: check auth and fetch user websites
 onMounted(async () => {
   await checkAuth();
   if (!user.value) {

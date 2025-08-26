@@ -16,7 +16,6 @@ async def toggle_defacement(website_id: int, enable: bool, current_user):
     website.defacement_enabled = enable
     db.commit()
 
-    # Start background thread
     if enable:
         if website_id not in running_monitors:
             print("Starting defacement monitor for website:", website_id)
@@ -25,7 +24,6 @@ async def toggle_defacement(website_id: int, enable: bool, current_user):
             thread.start()
     else:
         if website_id in running_monitors:
-            # Just remove the thread reference — the loop will stop next run if `defacement_enabled=False`
             del running_monitors[website_id]
 
     db.close()
