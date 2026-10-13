@@ -1,130 +1,243 @@
-# WebShield AI  
-**AI Powered Web Intrusion Detection and Auto-Defense SaaS Platform**
+<div align="center">
 
-## 📌 Introduction
-The rapid growth of the internet and web-based platforms has created unprecedented opportunities for businesses, governments, and individuals. However, this expansion has also brought a sharp increase in cyberattacks such as **SQL Injection (SQLi), Cross-Site Scripting (XSS), DOM manipulation, and website defacement**.  
+# WebShield AI
 
-Traditional security systems like firewalls and intrusion detection systems (IDS) often rely on **signature-based detection**, which is ineffective against evolving and zero-day threats.  
+**AI-powered web intrusion detection and auto-defense, delivered as a SaaS dashboard.**
 
-To address this issue, **WebShield AI** is designed as an **AI-powered website intrusion detection and auto-defense system**. Built as a **Software-as-a-Service (SaaS)** platform, it uses advanced **Machine Learning (ML) models** such as **LSTM for SQL injection detection** and **CNN for website defacement detection**.  
+Detects SQL injection, XSS, DOM tampering and visual defacement on your websites, logs every attempt, and emails the owner in real time.
 
-The project integrates:
-- **Frontend Dashboard (Vue.js)**
-- **Backend API (FastAPI + PostgreSQL)**
-- **Lightweight JavaScript Agent** deployed on client websites  
+<br/>
 
-It provides **real-time monitoring, threat visualizations, and AI integration**.
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white&labelColor=0A0A12)
+![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white&labelColor=0A0A12)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white&labelColor=0A0A12)
+![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-D71F00?style=for-the-badge&logo=sqlalchemy&logoColor=white&labelColor=0A0A12)
+![TensorFlow](https://img.shields.io/badge/TensorFlow-FF6F00?style=for-the-badge&logo=tensorflow&logoColor=white&labelColor=0A0A12)
+![Keras](https://img.shields.io/badge/Keras-D00000?style=for-the-badge&logo=keras&logoColor=white&labelColor=0A0A12)
+![scikit-learn](https://img.shields.io/badge/scikit--learn-F7931E?style=for-the-badge&logo=scikitlearn&logoColor=white&labelColor=0A0A12)
+<br/>
+![Vue.js](https://img.shields.io/badge/Vue_3-4FC08D?style=for-the-badge&logo=vuedotjs&logoColor=white&labelColor=0A0A12)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white&labelColor=0A0A12)
+![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white&labelColor=0A0A12)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white&labelColor=0A0A12)
+![Chart.js](https://img.shields.io/badge/Chart.js-FF6384?style=for-the-badge&logo=chartdotjs&logoColor=white&labelColor=0A0A12)
 
----
-
-## 🚨 Problem Statement
-
-### Social Problem
-Cyberattacks compromise the safety of millions of internet users by stealing sensitive data, defacing websites, and spreading misinformation. For **small and medium-sized enterprises (SMEs)**, a single security breach can cause:
-- Severe financial loss  
-- Reputational damage  
-- Customer distrust  
-
-Since many SMEs cannot afford enterprise-grade security solutions, they are often left vulnerable.
-
-### Technical Problem
-Most traditional website security solutions:  
-- Depend on **signature-based rules**, which fail against new/unknown attacks.  
-- Lack **adaptive intelligence**, meaning they do not learn or evolve over time.  
-- Provide **minimal usability**, requiring experts to manage.  
-- Do not offer **centralized SaaS-based dashboards** with AI-driven insights.  
-
-👉 Thus, there is a pressing need for an **affordable, intelligent, and automated intrusion detection and response system** that can be deployed easily and scale across industries.
+</div>
 
 ---
 
-## 🛡️ Project Description
-**WebShield AI** is an **AI-driven website security platform**. Its goal is to detect modern cyberattacks in real time and notify the website owner.
+## Overview
 
-### 🔑 Key Features
+Small and medium-sized businesses are frequent targets of SQL injection, cross-site scripting, DOM manipulation and website defacement, yet most cannot afford enterprise security tooling. Traditional signature-based firewalls also struggle with new attack variants.
 
-#### 1. SQL Injection Detection (LSTM Model)
-- Trained on SQL queries to differentiate between **malicious and normal queries**.  
-- Detects **hidden injection patterns** missed by other security systems.  
-- Reports anomalies to the backend and **blocks execution if harmful**.  
+WebShield AI combines **machine learning models** with **lightweight JavaScript agents** that site owners drop into their pages with a single `<script>` tag. Agents report suspicious activity to a FastAPI backend, which classifies, logs and alerts, while a Vue dashboard gives owners one place to manage sites, toggle protections and review attacks.
 
-#### 2. Website Defacement Detection (CNN Model)
-- Uses **visual screenshots** of websites captured periodically.  
-- CNN classifies whether the site’s appearance is **legitimate or tampered**.  
+## Key Features
 
-#### 3. DOM Mutation & XSS Detection
-- A **lightweight JS agent** monitors DOM changes in real time.  
-- Detects malicious `<script>`, `<iframe>`, event injections, etc.  
-- Reports anomalies to the backend and **blocks execution if harmful**.  
+| Module | How it works |
+| --- | --- |
+| **SQL Injection detection** | The SQL agent intercepts form submissions and sends input values to `/collect-sqli`. A Keras deep learning classifier (LSTM) scores each query; results are stored with a confidence score and malicious attempts trigger an alert. |
+| **XSS detection** | The XSS agent checks URL parameters and form inputs against suspicious patterns (`<script>`, `javascript:`, inline event handlers, `document.cookie`, and more), blocks the submission, reports to `/api/xss-report` and redirects the visitor to the home page. |
+| **DOM tampering detection** | The DOM agent uses a `MutationObserver` to watch for injected `SCRIPT`, `IFRAME`, `EMBED`, `OBJECT`, `LINK` and `STYLE` nodes, reports to `/api/dom-report` and redirects to the home page. |
+| **Visual defacement detection** | When enabled, a background monitor captures a screenshot of the site every 60 seconds and classifies it as `clean` or `defaced` with a Keras image model (CNN). |
+| **Uptime monitoring** | An async loop checks every registered site every 60 seconds, recording status code and response time. The dashboard shows per-site and global uptime over 1 to 90 days. |
+| **Email alerts** | Every detected SQLi, XSS, DOM or defacement event emails the site owner with the site, attack type, timestamp and details (IP, query, prediction, score). |
+| **Owner dashboard** | Add and remove websites, toggle each protection module, copy the agent snippet, verify it is installed on the live site, and view attack logs, charts and blocked-attack counts. |
+| **Session auth** | Sign up, log in and log out with bcrypt-hashed passwords and cookie-based sessions. |
 
-#### 4. Dashboard (Vue.js Frontend)
-- Centralized web portal for users.  
-- Features:  
-  - Add/manage websites  
-  - Toggle protection modules (SQLi, Defacement, XSS, DOM manipulation)  
-  - Attack visualizations (charts and logs)  
-  - Real-time alerts via email notification  
+## Architecture
 
-#### 5. Backend (FastAPI + PostgreSQL)
-- Handles authentication, user sessions, and attack logs.  
-- Hosts ML detection APIs.  
-- Manages **website-agent communication**.  
+```mermaid
+flowchart LR
+    subgraph Client["Protected website"]
+        SQLA["SQLi agent<br/>webshield-sql-agent.js"]
+        XSSA["XSS agent<br/>webshield-xss-agent.js"]
+        DOMA["DOM agent<br/>dom-defacement-agent.js"]
+    end
 
-#### 6. Auto-Defense Mechanism
-- If an attack is detected, the system can:  
-  - Mitigate the attack by **redirecting to the Home page**  
-  - **Log and notify** the admin in real-time  
+    subgraph Dashboard["Vue 3 dashboard"]
+        UI["Landing / Login / Signup / Dashboard"]
+    end
 
-📸 **Dashboard Screenshots:**  
-![Dashboard](ss1.png)  
-![Protected Websites](ss2.png)  
-![Global Attack Logs](ss3.png)  
-![Website Security Details](ss4.png)  
+    subgraph API["FastAPI backend"]
+        CDN["/cdn/* agent server"]
+        COLLECT["/collect-sqli"]
+        REPORT["/api/xss-report<br/>/api/dom-report"]
+        CRUD["Auth, websites,<br/>logs, uptime routes"]
+        SQLI_ML["SQLi model<br/>(Keras)"]
+        DEF["Defacement monitor<br/>(Keras image model)"]
+        UP["Uptime monitor loop"]
+        MAIL["SMTP email alerts"]
+    end
 
----
+    DB[("PostgreSQL")]
+    SHOT["Screenshot API"]
+    OWNER(["Site owner inbox"])
 
-## 📊 Project Flowchart
-![Flowchart](flowchart2.png)
+    CDN -- serves --> SQLA & XSSA & DOMA
+    SQLA -- form inputs --> COLLECT --> SQLI_ML
+    XSSA -- report --> REPORT
+    DOMA -- report --> REPORT
+    UI -- axios + session cookie --> CRUD
+    DEF -- fetch screenshot --> SHOT
+    UP -- HEAD request --> Client
+    COLLECT & REPORT & DEF & UP & CRUD --> DB
+    COLLECT & REPORT & DEF --> MAIL --> OWNER
+```
 
----
+A visual flowchart is also included in the repo:
 
-## 🛠️ Technologies Used
-| **Layer**        | **Technologies** |
-|------------------|------------------|
-| Frontend         | Vue.js, TailwindCSS, Chart.js |
-| Backend          | FastAPI, SQLAlchemy, Uvicorn |
-| Database         | PostgreSQL |
-| Machine Learning | TensorFlow/Keras (LSTM & CNN models), Scikit-learn |
-| Security Agent   | Lightweight JavaScript snippet (Mutation Observer) |
-| Version Control  | GitHub |
+![Project flowchart](flowchart2.png)
 
----
+## Tech Stack
 
-## 💰 Cost Analysis (Real World Implementation)
-| **Component** | **Estimated Cost** |
-|---------------|---------------------|
-| Cloud Hosting (Render/Railway) | $19 – $30/month |
-| GPU Training for ML Models (larger data) | $10 – $20/month |
-| Storage for Attack Logs | $15/month |
-| Domain + SSL | $130/year |
-| Monitoring & Scaling Costs | $100 – $500 |
+| Layer | Technologies |
+| --- | --- |
+| Frontend | Vue 3, TypeScript, Vite, Vue Router, Tailwind CSS, Chart.js (vue-chartjs), Axios, Heroicons, Iconify |
+| Backend | FastAPI, Uvicorn, Starlette sessions, Pydantic |
+| Database | PostgreSQL, SQLAlchemy |
+| Machine Learning | TensorFlow / Keras (SQLi and defacement models), scikit-learn + joblib (DOM model artifacts) |
+| Monitoring | httpx (async uptime checks), Requests, Pillow (screenshot decoding) |
+| Agents | Vanilla JavaScript served by the backend (`MutationObserver`, form interception) |
+| Alerts | SMTP over SSL (`smtplib`) |
 
-### Pricing Plans for SME Clients
-- **Basic Plan:** $15/month (1 website)  
-- **Professional Plan:** $50/month (up to 5 websites)  
-- **Enterprise Plan:** $200/month (unlimited websites + premium support)  
+## Project Structure
 
-👉 This makes **WebShield AI** financially feasible and scalable.
+```
+WebShieldAI/
+├── Backend/
+│   ├── main.py                 # FastAPI app, all routes, agent JS served from /cdn/*
+│   ├── models.py               # SQLAlchemy models: User, Website, SQL/XSS/DOM/Defacement logs, UptimeCheck
+│   ├── schemas.py              # Pydantic request/response schemas
+│   ├── services.py             # User/website creation, bcrypt auth, SQL prediction service
+│   ├── auth.py                 # Session-based current-user dependency
+│   ├── db.py                   # Engine, session factory, table creation
+│   ├── ml_model.py             # SQLi and DOM model loading and inference
+│   ├── defacement_control.py   # Starts/stops per-site defacement monitor threads
+│   ├── defacement_loop.py      # Screenshot capture + image classification loop
+│   ├── uptime.py               # Async uptime monitor
+│   ├── notifications.py        # SMTP email alerts and HTML templates
+│   ├── config.py               # SMTP settings read from environment
+│   ├── requirements.txt
+│   └── ml/                     # Trained models (.h5, .pkl)
+├── frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── Dashboard/      # AttackLogs, MetricsCard, SecurityChart, WebsiteCard
+│   │   │   ├── UI/             # Add-website and protection toggle modals
+│   │   │   └── *.vue           # Landing, Login, Signup, Dashboard pages
+│   │   ├── composables/        # useAuth, useDashboard, axios instance
+│   │   ├── router/             # Routes with auth guard on /dashboard
+│   │   └── types/
+│   ├── package.json
+│   └── vite.config.ts
+├── flowchart2.png
+└── ss1.png ... ss4.png         # Dashboard screenshots
+```
 
----
+## Getting Started
 
-## ✅ Conclusion
-WebShield AI addresses one of the most important challenges in modern web security: **intelligent, adaptive protection against evolving threats**.  
+### Prerequisites
 
-By leveraging ML models for **SQLi, defacement, DOM manipulation, and XSS detection**—and combining them with an **easy-to-use SaaS platform**—the system provides **affordable enterprise-grade protection** for SMEs and large organizations alike.  
+- Python 3.11+
+- Node.js and npm
+- PostgreSQL running locally
 
-This project demonstrates how **AI-driven defense mechanisms** can surpass traditional methods by learning different attack patterns.  
+### 1. Backend
 
-🚀 With future enhancements such as **federated learning, zero-trust integrations, and blockchain-based tamper-proof logs**, WebShield AI has the potential to **revolutionize website protection** and become a benchmark in intelligent cybersecurity systems.
+```bash
+cd Backend
+python -m venv venv
+source venv/bin/activate        # Windows: venv\Scripts\activate
+pip install -r requirements.txt
+pip install httpx "passlib[bcrypt]" itsdangerous   # imported by the code but not yet pinned in requirements.txt
+python -m uvicorn main:app --reload
+```
 
----
+The API starts on `http://127.0.0.1:8000` and creates its tables on startup. Run it from inside `Backend/` so the models in `ml/` resolve correctly. Interactive docs are available at `/docs`.
+
+The database connection string is set in `Backend/db.py` (defaults to a local `postgres` database on port 5432).
+
+### 2. Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+The dashboard expects the API at `http://localhost:8000` (configured in `src/composables/axios.ts`).
+
+### 3. Protect a website
+
+1. Sign up, log in and add your website from the dashboard.
+2. Enable a protection module and copy its snippet, for example:
+   ```html
+   <script src="http://127.0.0.1:8000/cdn/webshield-xss-agent.js?wid=YOUR_WEBSITE_ID"></script>
+   ```
+3. Paste it into your site and use the dashboard's verify step, which checks the live page for the snippet.
+
+## Environment Variables
+
+`Backend/config.py` reads the following SMTP settings from the environment:
+
+| Variable | Purpose |
+| --- | --- |
+| `SMTP_HOST` | SMTP server host |
+| `SMTP_PORT` | SMTP server port (SSL) |
+| `SMTP_USERNAME` | SMTP login user |
+| `SMTP_PASSWORD` | SMTP login password or app password |
+| `FROM_EMAIL` | Sender address for alerts |
+| `FROM_NAME` | Sender display name |
+
+> Note: `notifications.py` currently uses its own constants rather than importing `config.py`. Wire it to `config.py` before deploying.
+
+## API Endpoints
+
+| Method | Endpoint | Description |
+| --- | --- | --- |
+| `POST` | `/users/` | Register a user |
+| `POST` | `/login` | Log in and start a session |
+| `GET` | `/me` | Current user profile |
+| `POST` | `/logout` | End the session |
+| `POST` | `/websites/` | Add a website |
+| `GET` | `/websites/` | List the current user's websites |
+| `GET` | `/websites/me` | List the current user's websites |
+| `GET` | `/websites/{website_id}` | Get one website |
+| `DELETE` | `/websites/{website_id}` | Delete a website |
+| `POST` | `/websites/{website_id}/toggle-defacement` | Start or stop the defacement monitor |
+| `POST` | `/websites/{website_id}/update-protection` | Toggle `sqli`, `xss` or `dom` protection |
+| `GET` | `/websites/{website_id}/attack-logs` | Attack logs for a website |
+| `GET` | `/websites/{website_id}/blocked-count` | Blocked attack counts for a website |
+| `GET` | `/websites/{website_id}/uptime` | Uptime metrics for a website (`days` 1 to 90) |
+| `GET` | `/summary/uptime` | Uptime summary across the user's websites |
+| `GET` | `/me/attack-logs/total-count` | Attack totals by type for the user |
+| `POST` | `/predict-sqli/` | Classify a SQL query |
+| `POST` | `/collect-sqli` | SQLi agent report endpoint |
+| `POST` | `/api/xss-report` | XSS agent report endpoint |
+| `POST` | `/api/dom-report` | DOM agent report endpoint |
+| `GET` | `/check-cdn-code` | Verify an agent snippet is present on the live site |
+| `GET` | `/cdn/webshield-sql-agent.js` | Serve the SQLi agent (`?wid=`) |
+| `GET` | `/cdn/webshield-xss-agent.js` | Serve the XSS agent (`?wid=`, optional `debug=1`) |
+| `GET` | `/cdn/dom-defacement-agent.js` | Serve the DOM agent (`?wid=`, optional `debug=1`) |
+
+## Screenshots
+
+| Dashboard | Protected Websites |
+| :---: | :---: |
+| ![Dashboard](ss1.png) | ![Protected Websites](ss2.png) |
+| **Global Attack Logs** | **Website Security Details** |
+| ![Global Attack Logs](ss3.png) | ![Website Security Details](ss4.png) |
+
+## Roadmap
+
+- Federated learning for privacy-preserving model updates
+- Zero-trust integrations
+- Blockchain-based tamper-proof attack logs
+
+## Author
+
+**Md Tanvir Chowdhury**
+
+[![GitHub](https://img.shields.io/badge/GitHub-Tanvir--Chowdhury-181717?style=for-the-badge&logo=github&logoColor=white&labelColor=0A0A12)](https://github.com/Tanvir-Chowdhury)
+[![Portfolio](https://img.shields.io/badge/Portfolio-Visit-6C63FF?style=for-the-badge&logo=googlechrome&logoColor=white&labelColor=0A0A12)](https://tanvir-chowdhury.github.io/tanvir-portfolio/)
