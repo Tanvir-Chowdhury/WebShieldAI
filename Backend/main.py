@@ -10,6 +10,8 @@ from ml_model import predict_query
 from fastapi.responses import Response
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
+import secrets
+from config import SESSION_SECRET_KEY
 from auth import get_current_user
 import requests
 from typing import List, Union, Optional, Dict
@@ -32,9 +34,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-app.add_middleware(SessionMiddleware, secret_key="9f2b3a6e5c7c4965b5c3d11ecac7d6f1bd8446e23c4db487915b6a04e7db47bc")
-
-# 9f2b3a6e5c7c4965b5c3d11ecac7d6f1bd8446e23c4db487915b6a04e7db47bc
+app.add_middleware(SessionMiddleware, secret_key=SESSION_SECRET_KEY or secrets.token_hex(32))
 
 def get_site_primitives(db: Session, website_id: int, user_id: int):
     site = (

@@ -179,18 +179,18 @@ The dashboard expects the API at `http://localhost:8000` (configured in `src/com
 
 ## Environment Variables
 
-`Backend/config.py` reads the following SMTP settings from the environment:
+All secrets are read from the environment by `Backend/config.py`, which also loads a `Backend/.env` file if present. Copy `Backend/.env.example` to `Backend/.env` and fill in your values.
 
 | Variable | Purpose |
 | --- | --- |
-| `SMTP_HOST` | SMTP server host |
-| `SMTP_PORT` | SMTP server port (SSL) |
+| `SMTP_HOST` | SMTP server host (default `smtp.gmail.com`) |
+| `SMTP_PORT` | SMTP server port, SSL (default `465`) |
 | `SMTP_USERNAME` | SMTP login user |
 | `SMTP_PASSWORD` | SMTP login password or app password |
 | `FROM_EMAIL` | Sender address for alerts |
 | `FROM_NAME` | Sender display name |
-
-> Note: `notifications.py` currently uses its own constants rather than importing `config.py`. Wire it to `config.py` before deploying.
+| `SCREENSHOTONE_ACCESS_KEY` | ScreenshotOne API key used by the defacement monitor |
+| `SESSION_SECRET_KEY` | Signs session cookies. If unset, a random key is generated at startup and sessions reset on restart |
 
 ## API Endpoints
 

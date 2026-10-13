@@ -3,12 +3,7 @@ import smtplib
 from email.mime.text import MIMEText
 from email.utils import formataddr
 
-SMTP_HOST = "smtp.gmail.com"
-SMTP_PORT = 465
-SMTP_USERNAME = "tanvir.chowdhury.us@gmail.com"
-SMTP_PASSWORD = "jyothetwszhllruy"
-FROM_EMAIL = "alerts@webshieldai.com"
-FROM_NAME = "Web Shield AI"
+from config import SMTP_HOST, SMTP_PORT, SMTP_USERNAME, SMTP_PASSWORD, FROM_EMAIL, FROM_NAME
 
 def send_email_now(to_email: str, subject: str, html: str) -> None:
     msg = MIMEText(html, "html")

@@ -6,6 +6,7 @@ from io import BytesIO
 from PIL import Image, UnidentifiedImageError
 from sqlalchemy.orm import Session
 from db import SessionLocal
+from config import SCREENSHOTONE_ACCESS_KEY
 from models import DefacementLog, Website
 from datetime import datetime, timedelta
 import numpy as np
@@ -23,7 +24,7 @@ UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
 def fetch_screenshot_bytes(website_url: str, *, timeout=20) -> bytes:
     screenshot_url = (
         "https://api.screenshotone.com/take"
-        "?access_key=1Fp_kfqq-P3z6A"
+        f"?access_key={SCREENSHOTONE_ACCESS_KEY}"
         f"&url={website_url}"
         "&format=jpg"
         "&block_ads=true&block_cookie_banners=true&block_trackers=true"
